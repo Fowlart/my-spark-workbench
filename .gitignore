@@ -1,0 +1,10 @@
+/out/
+/.idea/
+/project/
+/src/main/resources/data/yellow_tripdata_2018-07/
+/src/main/resources/data/cars_1.json/
+/src/main/resources/data/cars_1.parquet/
+/src/main/resources/data/cars_test_1.json/
+/src/main/resources/data/movies.csv/
+/src/main/resources/data/result.csv/
+/src/main/resources/data/stocks.parquet/
