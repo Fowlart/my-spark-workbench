@@ -1,4 +1,4 @@
-package rrd_s
+package rdd
 
 import org.apache.spark.sql.functions.{avg, col}
 import org.apache.spark.sql.{SaveMode, SparkSession}

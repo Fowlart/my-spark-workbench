@@ -3,7 +3,7 @@ package playground
 import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types._
-import rrd_s.Rdds.spark
+import rdd.Rdds.spark
 
 /**
   * This is a small application that loads some manually inserted rows into a Spark DataFrame.
