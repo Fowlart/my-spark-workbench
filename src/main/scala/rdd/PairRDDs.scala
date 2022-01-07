@@ -40,13 +40,65 @@ object PairRDDs extends App {
     println(reduceByKey.mkString("(", ", ", ")"))
   }
 
+  // syntax WTF?
   def aggregateByKey() = {
     val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 5)))
-    val aggregateByKey = x.aggregateByKey((0, 0))(
-      (acc, item) => (acc._1 + item, acc._2 + 1),
+
+    val aggregateByKey = x.aggregateByKey((0, 0))((acc, item) => (acc._1 + item, acc._2 + 1),
       (acc1, acc2) => (acc1._1 + acc2._1, acc1._2 + acc2._2))
+
     println(aggregateByKey.collect().mkString("[", ", ", "]"))
   }
 
-  aggregateByKey()
+  def sortByKeyFunc() = {
+    val x = sc.parallelize(Array(('A', 1), ('C', 2), ('F', 3), ('C', 4), ('G', 5)))
+    val z = x.sortByKey().collect()
+    println(z.mkString("Array(", ", ", ")"))
+  }
+
+  /** =Two PairRDD Transformations= */
+  def subtractByKeyFunc() = {
+    val x = sc.parallelize(Array(('C', 1), ('B', 2), ('A', 3), ('A', 4)))
+    val y = sc.parallelize(Array(('A', 8), ('B', 7), ('A', 6), ('D', 5)))
+    val subtractByKeyResult = x.subtractByKey(y).collect()
+    println(subtractByKeyResult.mkString("(", ", ", ")"))
+  }
+
+  def cogroupFunc() = {
+    val x = sc.parallelize(Array(('C', 1), ('B', 2), ('A', 3)))
+    val y = sc.parallelize(Array(('A', 8), ('B', 7), ('A', 6), ('D', 5)))
+    val cogroupResult = x.cogroup(y).collect()
+    println(cogroupResult.mkString("Array(", ", ", ")"))
+  }
+
+  def joinFunc() = {
+    val x = sc.parallelize(Array(('C', 1), ('A', 3), ('A', 4)))
+    val y = sc.parallelize(Array(('A', 8), ('B', 7), ('A', 6), ('D', 5)))
+    val joinedResult = x.join(y).collect()
+    println(joinedResult.mkString("(", ", ", ")"))
+  }
+
+
+  /** =Actions on PairRDD= */
+  def countByKeyFunc() = {
+    val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 5)))
+    val result = x.countByKey()
+    println(result)
+  }
+
+  /** Will return one value per one key */
+  def collectAsMapFunc() = {
+    val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 5)))
+    val collectAsMapResult = x.collectAsMap()
+    println(collectAsMapResult)
+  }
+
+  /** Will return all values per one key */
+  def lookupFunc() = {
+    val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 5)))
+    val lookupResult = x.lookup('A')
+    println(lookupResult)
+  }
+
+
 }
