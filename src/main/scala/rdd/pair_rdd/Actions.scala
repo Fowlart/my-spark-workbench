@@ -5,7 +5,7 @@ import org.apache.spark.sql.SparkSession
 object Actions extends App {
 
   val sparkSession = SparkSession.builder()
-    .appName("PairRDDs")
+    .appName("PairRDDs. Actions.")
     .config("spark.master", "local")
     .getOrCreate()
 
@@ -23,15 +23,15 @@ object Actions extends App {
 
   /** Will return one value per one key */
   def collectAsMapFunc() = {
-    val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 5)))
+    val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 65)))
     val collectAsMapResult = x.collectAsMap()
     println(collectAsMapResult)
   }
 
-  /** Will return all values per one key */
+  /** Will return all values per given key */
   def lookupFunc() = {
     val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 5)))
-    val lookupResult = x.lookup('A')
+    val lookupResult = x.lookup('B')
     println(lookupResult)
   }
 }

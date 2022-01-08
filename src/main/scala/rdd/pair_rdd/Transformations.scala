@@ -11,14 +11,14 @@ object Transformations extends App {
 
   val sc = sparkSession.sparkContext
 
-  // mapValues()
-  // flatMapValues()
-  // groupByKey()
+  // mapValues() +
+  // flatMapValues() +
+  // groupByKey() +
   //reduceByKey()
   // aggregateByKey()
   // sortByKeyFunc()
   // subtractByKeyFunc()
-  // cogroupFunc()
+  cogroupFunc()
   // joinFunc()
 
   /** Will work only with collections of tuples. Will map values. */
@@ -46,7 +46,7 @@ object Transformations extends App {
     println(groupByKey.mkString("", " ", ""))
   }
 
-  /** Combination groupByKey and reduce.*/
+  /** Combination groupByKey and reduce. */
   def reduceByKey() = {
     val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 5)))
     val reduceByKey = x.reduceByKey((acc, item) => acc + item).collect()
@@ -54,11 +54,14 @@ object Transformations extends App {
   }
 
   def aggregateByKey() = {
-    val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4), ('B', 5)))
+    val x = sc.parallelize(Array(('B', 1), ('B', 2), ('A', 3), ('A', 4),
+      ('B', 5),('A', 6),('B', 7),('B', 8),('B', 9),('A', 10)),2)
 
-    val aggregateByKey = x.aggregateByKey((0, 0))((acc, item) => (acc._1 + item, acc._2 + 1),
-      (acc1, acc2) => (acc1._1 + acc2._1, acc1._2 + acc2._2))
+    val init_value: String = "EMPTY"
+    val f1 = (acc: String, item: Int) => s"$acc|$item"
+    val f2 = (acc1: String,acc2: String) => s"$acc1 - $acc2"
 
+    val aggregateByKey = x.aggregateByKey(init_value) (f1,f2)
     println(aggregateByKey.collect().mkString("", " ", ""))
   }
 
@@ -77,10 +80,10 @@ object Transformations extends App {
   }
 
   def cogroupFunc() = {
-    val x = sc.parallelize(Array(('C', 1), ('B', 2), ('A', 3)))
+    val x = sc.parallelize(Array(('C', 1), ('B', 2), ('A', 3),('A', 10),('A', 15)))
     val y = sc.parallelize(Array(('A', 8), ('B', 7), ('A', 6), ('D', 5)))
     val cogroupResult = x.cogroup(y).collect()
-    println(cogroupResult.mkString("Array(", ", ", ")"))
+    println(cogroupResult.mkString("", " ", ""))
   }
 
   def joinFunc() = {

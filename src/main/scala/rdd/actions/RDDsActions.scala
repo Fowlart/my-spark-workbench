@@ -32,7 +32,7 @@ object RDDsActions extends App {
 
   // reduceFunction()
   // foldFunction()
-  // aggregateFunction()
+  aggregateFunction()
 
   def reduceFunction(): Unit = {
     val sum = sc.parallelize(1 to 10).reduce((acc, item) => acc + item)
@@ -48,21 +48,21 @@ object RDDsActions extends App {
 
   def aggregateFunction() = {
 
-    val rdd = sc.parallelize(1 to 10,2)
+    val rdd = sc.parallelize(1 to 100,6)
 
     // Initial value to be used for each partition in aggregation, this value would be used to initialize the accumulator.
-    // We mostly use 0 for integer and Nil for collections.
-    val init_value = 0
+    val init_value:String = "EMPTY"
 
-    //  This operator is used to accumulate the results of each partition, and stores the running accumulated result to U
-    val f1 = (acc: Int, item: Int) => acc+item
+    //  This operator is used to accumulate the results of each partition, and stores the running accumulated result
+    val f1 = (acc: String, item: Int) => s"$acc|$item"
 
-    // This operator is used to combine the results of all partitions U
-    val f2 = (acc1: Int, acc2: Int) => acc1+acc2
+    // This operator is used to combine the results of all partitions
+    val f2 = (acc1: String,acc2: String) => s"$acc1 - $acc2"
 
     val x = rdd.aggregate(init_value)(f1, f2)
 
-    println("aggregateFunction: " + x)
+    // we will see 6 of '-' as f2 will be called one time per partition
+    println(x)
   }
 
   /** =Data Saving:= */
