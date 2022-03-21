@@ -4,7 +4,7 @@ version := "0.1"
 
 scalaVersion := "2.12.10"
 
-val sparkVersion = "3.0.2"
+val sparkVersion = "3.1.2"
 val vegasVersion = "0.3.11"
 val postgresVersion = "42.2.2"
 val hadoopVersion = "3.3.1"
@@ -23,5 +23,9 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.4.1",
   // postgres for DB connectivity
   "org.postgresql" % "postgresql" % postgresVersion,
-  "com.fasterxml.jackson.core" % "jackson-databind" % "2.10.0"
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.10.5.1",
+  "com.springml" % "spark-sftp_2.11" % "1.1.3",
+  "net.schmizz" % "sshj" % "0.1.1",
+  "org.apache.parquet" % "parquet-avro" % "1.10.1",
+  "io.delta" %% "delta-core" % "1.0.0"
 )

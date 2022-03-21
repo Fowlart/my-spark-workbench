@@ -1,0 +1,13 @@
+version: '2'
+services:
+  sftp:
+    image: atmoz/sftp
+    volumes:
+    - /Users/artur/Desktop/sftp_folder:/home/foo/upload
+    ports:
+     - "2222:22"
+    command: foo:pass:1001
+
+# connect via terminal
+# sftp -P 2222 foo@localhost
+# password - pass
