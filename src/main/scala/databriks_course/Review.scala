@@ -7,6 +7,7 @@ object Review extends App{
 
   val spark = SparkSession.builder().appName("Joins").config("spark.master", "local").getOrCreate()
 
+  /**
   val persons = spark
     .read
     .option("inferSchema","true")
@@ -23,5 +24,9 @@ object Review extends App{
     .distinct()
     .repartition(8)
     .write
+    .option("overwrite","true")
     .parquet("src/main/resources/databriks_data/persons")
+  **/
+
+  spark.read.parquet("src/main/resources/databriks_data/persons").show()
 }
